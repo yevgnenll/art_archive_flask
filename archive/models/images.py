@@ -1,6 +1,9 @@
-from archive import db
-
+from archive import db, app
 from archive.models import Artist
+
+from werkzeug import secure_filename
+
+import os
 
 
 class Image(db.Model):
@@ -34,17 +37,26 @@ class Image(db.Model):
 
         return result_dictionary
 
-    def data_get_as_dict(self, params):
+    def data_get_as_dict(self, params_row):
 
+        params = params_row.values
         year = params['year']
 
+        upload_file = params_row.files['image_file']
+
+        if upload_file.filename == '':
+            abort(400)
         try:
             year = int(year)
         except ValueError:
             abort(400)
 
+        if upload_file :
+            filename = secure_filename(upload_file.filename)
+            upload_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
         self.year = year
-        self.image_url = params['image_url']
+        self.image_url = filename
         self.title = params['title']
         self.artist_id = params['artist_id']
         self.description = params['description']
