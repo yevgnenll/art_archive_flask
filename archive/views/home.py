@@ -15,6 +15,7 @@ def index():
         'home.html',
     )
 
+
 @app.route('/uploads/<filename>')
 def access_upload_image(filename):
     print("base_dir", BASE_DIR)

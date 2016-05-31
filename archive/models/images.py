@@ -51,7 +51,7 @@ class Image(db.Model):
         except ValueError:
             abort(400)
 
-        if upload_file :
+        if upload_file:
             filename = secure_filename(upload_file.filename)
             upload_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
