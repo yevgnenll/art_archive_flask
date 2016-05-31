@@ -4,3 +4,4 @@ ipython
 Flask-WTF
 flask-sqlalchemy
 mysqlclient
+werkzeug
