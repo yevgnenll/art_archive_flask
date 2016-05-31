@@ -14,7 +14,7 @@ def is_allowed_extend(filename):
         filename.split('.').pop() in app.config['ALLOWED_EXTENSIONS']
 
 
-def save_upload_file(upload_file, result_name):
+def save_to_server(upload_file, result_name):
 
     upload_file.filename = result_name
     upload_file.save(
@@ -42,6 +42,6 @@ def upload_image_file(data):
         '.'.join([pre_name, ext_name])
     )
 
-    save_upload_file(upload_file, result_name)
+    save_to_server(upload_file, result_name)
 
     return 'uploads/' + result_name
