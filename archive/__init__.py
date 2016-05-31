@@ -15,5 +15,11 @@ app.config['ALLOWED_EXTENSIONS'] = set(['png', 'jpg', 'gif', 'jpeg', 'bmp', 'svg
 
 db = SQLAlchemy(app)
 
+BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
+
 
 from archive import views
