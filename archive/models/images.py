@@ -18,6 +18,7 @@ class Image(db.Model):
     year = db.Column(db.Integer)
     artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'))
     description = db.Column(db.String(255))
+    user_id = db.Column(db.String(45))
 
     def __repr__(self):
         return '<id:{id} title: {title}>'.format(
