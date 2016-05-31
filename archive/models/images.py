@@ -1,3 +1,5 @@
+from flask import abort
+
 from archive import db, app
 from archive.models import Artist
 
@@ -42,21 +44,16 @@ class Image(db.Model):
         params = params_row.values
         year = params['year']
 
-        upload_file = params_row.files['image_file']
-
-        if upload_file.filename == '':
-            abort(400)
         try:
             year = int(year)
         except ValueError:
             abort(400)
 
-        if upload_file:
-            filename = secure_filename(upload_file.filename)
-            upload_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        from archive.utils import upload_image_file
+        image_path = upload_image_file(params_row)
 
         self.year = year
-        self.image_url = filename
+        self.image_url = image_path
         self.title = params['title']
         self.artist_id = params['artist_id']
         self.description = params['description']

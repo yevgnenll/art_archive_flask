@@ -11,7 +11,9 @@ app.config.from_object('config')
 # app.wsgi_app = MethodRewriteMiddleware(app.wsgi_app)
 
 app.config['UPLOAD_FOLDER'] = 'uploads/'
-app.config['ALLOWED_EXTENSIONS'] = set(['png', 'jpg', 'gif', 'jpeg', 'bmp', 'svg'])
+app.config['ALLOWED_EXTENSIONS'] = set(
+    ['png', 'jpg', 'gif', 'jpeg', 'bmp', 'svg']
+)
 
 db = SQLAlchemy(app)
 
