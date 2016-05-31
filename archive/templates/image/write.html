@@ -6,8 +6,9 @@
 
 {% block content %}
 
-    <form action="/api/images/" method="post">
+    <form action="/api/images/" method="post" enctype="multipart/form-data">
         <p><input type="text" name="image_url" placeholder="이미지 링크"></p>
+        <p><input type="file" name="image_file" placeholder="이미지 업로드"></p>
         <p>
             <select id="" name="artist_id">
                 {% for artist in artists %}
@@ -20,5 +21,6 @@
         <p><input type="text" name="description" placeholder="작품설명"></p>
         <p><input type="submit"></p>
     </form>
+    <img src="test1.jpeg"/>
 
 {% endblock %}
