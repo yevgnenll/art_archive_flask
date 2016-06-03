@@ -19,7 +19,7 @@ def image_update(id):
 
     return render_template(
         'image/update.html',
-        artists=authors,
+        image=image,
     )
 
 

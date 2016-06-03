@@ -1,4 +1,4 @@
-from flask import abort
+from flask import abort, request
 
 from archive import db, app
 
@@ -53,7 +53,7 @@ class Image(db.Model):
         image_path = upload_image_file(params_row)
 
         self.year = year
-        self.image_url = image_path
+        self.image_url = request.url_root + image_path
         self.title = params['title']
         self.artist_name = params['artist_name']
         self.description = params['description']

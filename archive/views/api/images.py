@@ -52,9 +52,7 @@ def images_detail(id):
     image = Image.query.get_or_404(id)
     # name = Artist.query.filter(Artist.id == image.artist_id)
 
-    content = image.data_to_dict(
-        name.one().name,
-    )
+    content = image.data_to_dict()
 
     return jsonify(
         code=200,
@@ -70,7 +68,7 @@ def images_update(id):
     params = request.values
     image = Image.query.filter(Image.id == id)
 
-    if not images.all():
+    if not image.all():
         abort(404)
     image.update(params)
 
