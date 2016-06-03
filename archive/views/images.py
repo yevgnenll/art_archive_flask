@@ -1,7 +1,7 @@
 from flask import render_template
 
 from archive import app
-from archive.models import Artist, Image
+from archive.models import Image
 
 
 @app.route('/image/write/', methods=['GET'])

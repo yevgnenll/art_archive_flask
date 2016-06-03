@@ -2,17 +2,16 @@ from flask import render_template, request, jsonify, abort
 from sqlalchemy.orm import sessionmaker
 
 from archive import app
-from archive.models import Artist, Image
+from archive.models import Image
 
 from archive.utils import pagination_dict, image_data_filter,\
-    image_add_columns, pagination_for_list, is_title_artist_exist
+    pagination_for_list
 
 
 @app.route('/api/images/', methods=['GET'])
 def images():
 
-    images = Image.query.join(Artist, Image.artist_id == Artist.id)
-    images = image_add_columns(images)
+    images = Image.query
     images = image_data_filter(request.args, images)
 
     list_amount = images.count()
@@ -21,9 +20,7 @@ def images():
 
     content = []
     for image in images:
-        data = image.Image.data_to_dict(
-            image.name
-        )
+        data = image.data_to_dict()
         content.append(data)
 
     return jsonify(
@@ -57,7 +54,7 @@ def images_insert():
 def images_detail(id):
 
     image = Image.query.get_or_404(id)
-    name = Artist.query.filter(Artist.id == image.artist_id)
+    # name = Artist.query.filter(Artist.id == image.artist_id)
 
     content = image.data_to_dict(
         name.one().name,
