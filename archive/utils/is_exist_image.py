@@ -1,7 +1,7 @@
 from archive.models import Image
 
 
-def title_artist_exist(params):
+def is_title_artist_exist(params):
 
     title = params.get('title')
     artist_id = params.get('artist_id')

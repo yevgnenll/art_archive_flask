@@ -5,7 +5,7 @@ from archive import app
 from archive.models import Artist, Image
 
 from archive.utils import pagination_dict, image_data_filter,\
-    image_add_columns, pagination_for_list, title_artist_exist
+    image_add_columns, pagination_for_list, is_title_artist_exist
 
 
 @app.route('/api/images/', methods=['GET'])
@@ -36,7 +36,7 @@ def images():
 @app.route('/api/images/', methods=['POST'])
 def images_insert():
 
-    is_check = title_artist_exist(request.values)
+    is_check = is_title_artist_exist(request.values)
     if not is_check:
         abort(400)
 
@@ -72,6 +72,8 @@ def images_detail(id):
 @app.route('/api/images/<id>', methods=['PUT'])
 def images_update(id):
 
+    print('image update')
+    # from IPython import embed; embed()
     params = request.values
     image = Image.query.filter(Image.id == id)
 

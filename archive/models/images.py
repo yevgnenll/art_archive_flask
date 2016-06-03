@@ -36,6 +36,7 @@ class Image(db.Model):
             "artist_id": self.artist_id,
             "description": self.description,
             "name": artist_name,
+            "user_id": self.user_id,
         }
 
         return result_dictionary
@@ -58,5 +59,6 @@ class Image(db.Model):
         self.title = params['title']
         self.artist_id = params['artist_id']
         self.description = params['description']
+        self.user_id = params['user_id']
 
         return self
