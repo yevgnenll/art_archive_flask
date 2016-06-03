@@ -1,4 +1,4 @@
-from flask import abort
+from flask import abort, request
 
 from archive import app, BASE_DIR
 
@@ -35,6 +35,7 @@ def upload_image_file(data):
         abort(400)
 
     # make current time as image name
+    # 134563322.232 -> 134563322
     pre_name = str(time.time()).split('.')[0]
     ext_name = file_name.split('.').pop()
 
