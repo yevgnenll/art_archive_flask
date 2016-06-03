@@ -33,10 +33,6 @@ def images():
 @app.route('/api/images/', methods=['POST'])
 def images_insert():
 
-    is_check = is_title_artist_exist(request.values)
-    if not is_check:
-        abort(400)
-
     image = Image()
     Image.query.session.add(
         image.data_get_as_dict(request)

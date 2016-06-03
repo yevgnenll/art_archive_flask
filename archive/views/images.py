@@ -7,11 +7,8 @@ from archive.models import Image
 @app.route('/image/write/', methods=['GET'])
 def image_write():
 
-    authors = Artist.query.all()
-
     return render_template(
         'image/write.html',
-        artists=authors,
     )
 
 
@@ -19,12 +16,10 @@ def image_write():
 def image_update(id):
 
     image = Image.query.get_or_404(id)
-    authors = Artist.query.all()
 
     return render_template(
         'image/update.html',
         artists=authors,
-        image=image,
     )
 
 
