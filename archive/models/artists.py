@@ -19,6 +19,7 @@ class Artist(db.Model):
     )
     country = db.Column(db.String(45))
     genre = db.Column(db.String(45))
+    user_id = db.Column(db.String(45))
 
     def __repr__(self):
         return '<id:{id} artist {name}>'.format(
