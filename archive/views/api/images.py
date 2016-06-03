@@ -24,7 +24,7 @@ def images():
         content.append(data)
 
     return jsonify(
-        content=contet,
+        content=content,
         code=200,
         pagination=pagination_dict(request.args, list_amount),
     )
