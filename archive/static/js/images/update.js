@@ -4,7 +4,7 @@
         var image_id = $('#update_btn').data('image-id');
 
         $('#update_btn').click(function(){
-		    $.ajax({
+            $.ajax({
                 url: "/api/images/" + image_id,
                 dataType: "json",
                 method: "PUT",

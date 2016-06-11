@@ -1,33 +1,27 @@
-from flask import Flask
+from flask import Flask, request, redirect, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 
-"""
-from werkzeug import Request
+from werkzeug.utils import secure_filename
+
+import os
 
 
-class MethodRewriteMiddleware(object):
-
-    def __init__(self, app, input_name='_method'):
-        self.app = app
-        self.input_name = input_name
-
-    def __call__(self, environ, start_response):
-        request = Request(environ)
-
-        if self.input_name in request.form:
-            method = request.form[self.input_name].upper()
-
-            if method in ['GET', 'POST', 'PUT', 'DELETE']:
-                environ['REQUEST_METHOD'] = method
-
-        return self.app(environ, start_response)
-
-"""
 app = Flask(__name__)
 app.config.from_object('config')
 # app.wsgi_app = MethodRewriteMiddleware(app.wsgi_app)
 
+app.config['UPLOAD_FOLDER'] = 'uploads/'
+app.config['ALLOWED_EXTENSIONS'] = set(
+    ['png', 'jpg', 'gif', 'jpeg', 'bmp', 'svg']
+)
+
 db = SQLAlchemy(app)
+
+BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
 
 
 from archive import views
