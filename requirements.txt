@@ -5,3 +5,4 @@ Flask-WTF
 flask-sqlalchemy
 mysqlclient
 werkzeug
+uwsgi

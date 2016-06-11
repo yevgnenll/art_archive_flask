@@ -1,4 +1,6 @@
-from archive.models import Artist, Image
+from archive.models import Image
+
+from flask import abort
 
 
 def get_params(params):
@@ -24,39 +26,15 @@ def params_to_dict(params):
     return result
 
 
-def artist_data_filter(params, datas):
-
-    if params.get('name'):
-        datas = datas.filter(Artist.name == params.get('name'))
-
-    if params.get('birth_year'):
-        datas = datas.filter(Artist.birth_year == params.get('birth_year'))
-
-    if params.get('genre'):
-        datas = datas.filter(Artist.gerne == params.get('genre'))
-
-    if params.get('country'):
-        datas = datas.filter(Artist.country == params.get('country'))
-
-    if params.get('death_year'):
-        datas = datas.filter(Artist.death_year == params.get('death_year'))
-
-    if params.get('title'):
-        datas = datas.filter(
-            Artist.id == Image.query.filter(
-                Image.title == params.get('title')
-            ).value('artist_id')
-        )
-
-    return datas
-
-
 def image_data_filter(params, datas):
+
+    if not params.get('user_id'):
+        abort(401)
 
     if params.get('title'):
         datas = datas.filter(Image.title == params.get('title'))
 
-    if params.get('name'):
+    if params.get('artist_name'):
         datas = datas.filter(Image.name == params.get('name'))
 
     if params.get('year'):

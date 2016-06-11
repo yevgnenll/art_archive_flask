@@ -2,7 +2,6 @@ from archive import app, BASE_DIR
 
 from flask import render_template, send_from_directory
 
-from archive.models import Artist
 from archive.models import Image
 
 import os
