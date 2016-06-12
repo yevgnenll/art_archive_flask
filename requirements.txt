@@ -6,3 +6,4 @@ flask-sqlalchemy
 mysqlclient
 werkzeug
 uwsgi
+gunicorn
