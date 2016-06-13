@@ -7,3 +7,4 @@ mysqlclient
 werkzeug
 uwsgi
 gunicorn
+honcho

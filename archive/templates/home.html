@@ -6,9 +6,294 @@ home
 {% endblock %}
 
 {% block content %}
-    <h1>art archive</h1>
-    <main>
-        <h2>hi </h2>  
-    </main>
+<h3 id="artarchive를-api로-설계">art_archive를 api로 설계</h3>
+
+<p><strong>우리 API는 다음 method를 사용합니다</strong></p>
+
+<ul>
+<li><strong>GET</strong>: 서버에서 데이터를 찾아옵니다.</li>
+<li><strong>POST</strong>: 서버에 데이터를 입력합니다.</li>
+<li><strong>PUT</strong>: 서버의 데이터를 갱신합니다.</li>
+<li><strong>DELETE</strong>: 서버의 데이터를 삭제합니다.</li>
+</ul>
+
+
+
+<h3 id="artarchive의-endpoint">art_archive의 Endpoint</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Action</th>
+  <th>HTTP method</th>
+  <th>URI</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>유저의 이미지 list</td>
+  <td>GET</td>
+  <td>/api/images/?page=page&amp;count=count&amp;user_id=user_id</td>
+</tr>
+<tr>
+  <td>이미지 업로드</td>
+  <td>POST</td>
+  <td>/api/images/</td>
+</tr>
+<tr>
+  <td>이미지 삭제</td>
+  <td>DELETE</td>
+  <td>/api/images/<em>id</em></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="artarchive의-resources">art_archive의 Resources</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Resource</th>
+  <th>URI</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>이미지 list</td>
+  <td>/api/images/</td>
+</tr>
+<tr>
+  <td>유저 list</td>
+  <td>/api/users/</td>
+</tr>
+<tr>
+  <td>이미지</td>
+  <td>/api/images/<em>id</em></td>
+</tr>
+<tr>
+  <td>유저</td>
+  <td>/api/users/<em>id</em></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="1-유저의-이미지-list-보여주기">1. 유저의 이미지 list 보여주기</h4>
+
+<ul>
+<li><strong>URL</strong></li>
+</ul>
+
+<p>/api/images/?page=page&amp;count=count&amp;user_id=user_id<br></p>
+
+<ul>
+<li><p><strong>Method</strong></p>
+
+<p><code>GET</code></p></li>
+<li><p><strong>URL Param</strong></p></li>
+</ul>
+
+<p><strong>required:</strong><br>
+page=[Integer] default = 1 현재페이지<br>
+count=[Integer] default = 10 한 페이지에 보여줄 결과의 갯수<br>
+user_id=[Integer] 유저의 ID<br></p>
+
+<ol>
+<li><p>user_id가 있는 경우<br>
+이미지제목: title=[String]<br>
+업로드한 유저ID: user_id=[String]<br></p>
+
+<p>ex.) /api/images/?page=page&amp;count=count&amp;user_id=101</p></li>
+<li><p>user_id가 없는 경우<br>
+요청 실패: 아래의 ERROR Response 참조</p>
+
+<ul><li><p><strong>SUCCESS Response</strong></p></li>
+<li><p><strong>code</strong>: 200<br>
+<strong>pagination</strong>: </p><pre> { current_page: 1, next_url: '/api/images/?page=2&amp;count=입력받은 수&amp;user_i=사용자번호’} </pre> <br>
+<strong>pagination</strong>: 현재 페이지는 존재하지만 다음 페이지가 없는경우  <br>
+            <pre> { current_page: 1, next_url: null } </pre> <br>
+<strong>content</strong>: 1페이지에 10개 이하의 데이터 전송<p></p>
+
+<pre>   { 
+    user_id: 사용자 ID[Integer], 
+    title: 이미지 제목[String] ,
+    current_page: 현재 페이지[Integer],
+    next_url: 다음 페이지 주소[URL],
+    image_list: {
+    image_url: 이미지 주소[URL],
+    title: 이미지 제목[String]
+    }
+    }
+</pre></li>
+<li><p><strong>ERROR Response</strong></p></li>
+<li><p><strong>code</strong>: 404<br>
+<strong>content</strong>: </p><pre> { error: "Data doesn't exist" } </pre> <p></p></li>
+<li><p><strong>code</strong>: 500<br>
+<strong>content</strong>: </p><pre> { error: "Internal Server Error" } </pre> <p></p></li>
+<li><p><strong>Sample Code</strong></p></li></ul></li>
+</ol>
+
+
+
+<pre class="prettyprint"><code class=" hljs ruby">  <span class="hljs-variable">$.</span>ajax({
+    <span class="hljs-symbol">url:</span> <span class="hljs-string">"/api/images/?page=1&amp;count=15&amp;user_id=101”,
+    dataType: "</span>json<span class="hljs-string">",
+    type : "</span><span class="hljs-constant">GET</span><span class="hljs-string">",
+    success : function(result) {
+      console.log(result);
+    }
+  });
+</span></code></pre>
+
+<hr>
+
+
+
+<h4 id="2-이미지-업로드하기-api">2. 이미지 업로드하기 api</h4>
+
+<p>이미지를 업로드 합니다.</p>
+
+<ul>
+<li><p><strong>URL</strong></p>
+
+<p>/api/images/</p></li>
+<li><p><strong>Method</strong></p>
+
+<p><code>POST</code></p></li>
+<li><p><strong>URL Param</strong></p>
+
+<ul><li><p><strong>required:</strong><br>
+user_id=[Integer] <br>
+title=[String] <br>
+image_data=[Byte] <br></p></li>
+<li><p><strong>discription</strong>: <br>
+user_id로 사용자 정보가 연결됩니다. <br>
+작품에 대한 고유 ID는 자동으로 부여됩니다 <br>
+<strong>multipart</strong> 로 업로드를 해야 image가 업로드 됩니다</p></li></ul></li>
+<li><p><strong>SUCCESS Response</strong></p>
+
+<ul><li><strong>code</strong>: 201<br>
+<strong>content</strong>: <br>
+<pre> { result: "Created"} </pre></li></ul></li>
+<li><p><strong>ERROR Response</strong></p>
+
+<ul><li><p><strong>code</strong>: 400<br>
+<strong>content</strong>: </p><pre> { error: "Bad Request" } </pre> <p></p></li>
+<li><p><strong>code</strong>: 500<br>
+<strong>content</strong>: </p><pre> { error: "Internal Server Error" } </pre> <p></p></li></ul></li>
+<li><p><strong>Sample Code</strong></p></li>
+</ul>
+
+
+
+<pre class="prettyprint"><code class=" hljs haskell">  $.ajax({
+    url: <span class="hljs-string">"/api/images/"</span>,
+    dataType: <span class="hljs-string">"json"</span>,
+    <span class="hljs-typedef"><span class="hljs-keyword">type</span> : "<span class="hljs-type">POST</span>",</span>
+    <span class="hljs-typedef"><span class="hljs-keyword">data</span> : <span class="hljs-container">{
+        "<span class="hljs-title">title</span>": “이미지제목",
+        “<span class="hljs-title">user_id</span>": 업로드하는 사용자의 <span class="hljs-title">id</span>,
+        "<span class="hljs-title">image_data</span>”: “멀티파트 업로드되는 이미지 바이트 데이터”
+        }</span></span>
+    success : function(result) {
+      console.log(result);
+    }
+  });
+</code></pre>
+
+<hr>
+
+
+
+<h4 id="3-이미지-삭제하기">3. 이미지 삭제하기</h4>
+
+<ul>
+<li><p><strong>URL</strong></p>
+
+<p>/api/images/:id</p></li>
+<li><p><strong>Method</strong></p>
+
+<p><code>DELETE</code></p></li>
+<li><p><strong>URL Param</strong></p>
+
+<ul><li><strong>required:</strong><br>
+image_id=[Integer]<br>
+user_id=[Integer]</li></ul></li>
+<li><p><strong>SUCCESS Response</strong></p>
+
+<ul><li><strong>code</strong>: 204<br>
+<strong>content</strong>: <br>
+<pre> { result: "No Content"} </pre></li></ul></li>
+<li><p><strong>ERROR Response</strong></p>
+
+<ul><li><p><strong>code</strong>: 404<br>
+<strong>content</strong>: </p><pre> { error: "Not Found" } </pre> <p></p></li>
+<li><p><strong>code</strong>: 500<br>
+<strong>content</strong>: </p><pre> { error: "Internal Server Error" } </pre> <p></p></li>
+<li><p><strong>code</strong>: 401<br>
+<strong>content</strong>: </p><pre> { error: “Only uploaded user can delete” } </pre> <p></p></li></ul></li>
+<li><p><strong>Sample Code</strong></p></li>
+</ul>
+
+
+
+<pre class="prettyprint"><code class=" hljs ruby">  <span class="hljs-variable">$.</span>ajax({
+    <span class="hljs-symbol">url:</span> <span class="hljs-string">"/api/images/{id}&amp;{user_id}”,
+    dataType: "</span>json<span class="hljs-string">",
+    type : "</span><span class="hljs-constant">DELETE</span><span class="hljs-string">",
+    success : function(result) {
+      console.log(result);
+    }
+  });
+</span></code></pre>
+
+<hr>
+
+
+
+<h4 id="4-사용자-정보-삭제하기">4. 사용자 정보 삭제하기</h4>
+
+<p>사용자 정보를 삭제는 주의가 필요합니다. <br>
+해당 사용자로 등록되어있는 모든 이미지 정보가 함께 삭제됩니다</p>
+
+<ul>
+<li><p><strong>URL</strong></p>
+
+<p>/api/users/:id</p></li>
+<li><p><strong>Method</strong></p>
+
+<p><code>DELETE</code></p></li>
+<li><p><strong>URL Param</strong></p>
+
+<ul><li><strong>required:</strong><br>
+id=[Integer]</li></ul></li>
+<li><p><strong>SUCCESS Response</strong></p>
+
+<ul><li><strong>code</strong>: 204<br>
+<strong>content</strong>: <br>
+<pre> { result: "No Content"} </pre></li></ul></li>
+<li><p><strong>ERROR Response</strong></p>
+
+<ul><li><p><strong>code</strong>: 404<br>
+<strong>content</strong>: </p><pre> { error: "Not Found" } </pre> <p></p></li>
+<li><p><strong>code</strong>: 500<br>
+<strong>content</strong>: </p><pre> { error: "Internal Server Error" } </pre> <p></p></li></ul></li>
+<li><p><strong>Sample Code</strong></p></li>
+</ul>
+
+
+
+<pre class="prettyprint"><code class=" hljs css">  $<span class="hljs-class">.ajax</span>(<span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">url</span>:<span class="hljs-value"> <span class="hljs-string">"/api/artists/{id}"</span>,
+    dataType: <span class="hljs-string">"json"</span>,
+    type : <span class="hljs-string">"DELETE"</span>,
+    success : <span class="hljs-function">function(result)</span> {
+      console.<span class="hljs-function">log(result)</span></span></span>;
+    <span class="hljs-rule">}</span></span>
+  });
+</code></pre>
+
+<hr>
 {% endblock %}
 
