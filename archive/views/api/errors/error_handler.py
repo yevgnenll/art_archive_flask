@@ -32,7 +32,7 @@ def error500(e):
         error="Internal Server Error",
     )
 
-
+"""
 @app.errorhandler(400)
 def error400(e):
 
@@ -40,3 +40,4 @@ def error400(e):
         code=400,
         error="Bad Request",
     )
+"""
