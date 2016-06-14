@@ -42,6 +42,7 @@ class Image(db.Model):
     def data_get_as_dict(self, params_row):
 
         params = params_row.values
+        print(params)
         year = params['year']
 
         try:
