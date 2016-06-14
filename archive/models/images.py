@@ -42,12 +42,13 @@ class Image(db.Model):
     def data_get_as_dict(self, params_row):
 
         params = params_row.values
-        year = params['year']
+        year = params.get('year')
         # from IPython import embed; embed()
         print(params)
 
         try:
-            year = int(year)
+            if not year:
+                year = int(year)
         except ValueError:
             # abort(400)
             pass
