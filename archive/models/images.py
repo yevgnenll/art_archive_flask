@@ -43,10 +43,11 @@ class Image(db.Model):
 
         params = params_row.values
         year = params['year']
-        for key, param in params:
+        # from IPython import embed; embed()
+        for key in params:
             if key == 'image_file':
                 continue
-            print(key, paraam)
+            print(key, ":", params[key])
 
         try:
             year = int(year)
