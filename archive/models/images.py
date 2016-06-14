@@ -56,7 +56,8 @@ class Image(db.Model):
         try:
             year = int(year)
         except ValueError:
-            abort(400)
+            # abort(400)
+            pass
 
         from archive.utils import upload_image_file
         image_path = upload_image_file(params_row)
