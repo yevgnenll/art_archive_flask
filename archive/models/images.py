@@ -48,7 +48,7 @@ class Image(db.Model):
 
         try:
             if year is not None:
-                year = int(year)
+                year = int(year.replace('\r\n', ''))
         except ValueError:
             # abort(400)
             pass
