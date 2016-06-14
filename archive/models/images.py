@@ -45,14 +45,6 @@ class Image(db.Model):
         year = params['year']
         # from IPython import embed; embed()
         print(params)
-        for key in params:
-            if key == 'image_file':
-                print(key, '-----')
-            print(key, ":", params[key])
-        for key in params_row:
-            if key == 'iamge_file':
-                print(key)
-            print('----', key, ": ", params_row[key])
 
         try:
             year = int(year)
