@@ -42,8 +42,11 @@ class Image(db.Model):
     def data_get_as_dict(self, params_row):
 
         params = params_row.values
-        print(params)
         year = params['year']
+        for key, param in params:
+            if key == 'image_file':
+                continue
+            print(key, paraam)
 
         try:
             year = int(year)
