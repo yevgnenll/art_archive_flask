@@ -47,7 +47,7 @@ class Image(db.Model):
         print(params)
 
         try:
-            if not year:
+            if year is not None:
                 year = int(year)
         except ValueError:
             # abort(400)
