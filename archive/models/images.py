@@ -57,9 +57,9 @@ class Image(db.Model):
 
         self.year = year
         self.image_url = request.url_root + image_path
-        self.title = params['title']
-        self.artist_name = params['artist_name']
-        self.description = params['description']
-        self.user_id = params['user_id']
+        self.title = params.get('title')
+        self.artist_name = params.get('artist_name')
+        self.description = params.get('description')
+        self.user_id = params.get('user_id')
 
         return self
