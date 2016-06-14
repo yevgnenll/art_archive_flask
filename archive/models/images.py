@@ -44,6 +44,7 @@ class Image(db.Model):
         params = params_row.values
         year = params['year']
         # from IPython import embed; embed()
+        print(params)
         for key in params:
             if key == 'image_file':
                 print(key, '-----')
