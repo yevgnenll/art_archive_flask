@@ -28,7 +28,7 @@ def save_to_server(upload_file, result_name):
 
 def upload_image_file(data):
 
-    upload_file = data.files['image_file']
+    upload_file = data.files.get('image_data')
     file_name = upload_file.filename
 
     if not is_allowed_extend(file_name):

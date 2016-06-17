@@ -47,11 +47,10 @@ class Image(db.Model):
         print(params)
 
         try:
-            if year is not None:
+            if year:
                 year = int(year.replace('\r\n', ''))
         except ValueError:
-            # abort(400)
-            pass
+            abort(400)
 
         from archive.utils import upload_image_file
         image_path = upload_image_file(params_row)
