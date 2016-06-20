@@ -40,7 +40,7 @@ class Image(db.Model):
         image_path = upload_image_file(params_row)
 
         self.image_url = request.url_root + image_path
-        self.title = params.get('title')
+        self.title = params.get('title').replace('\n', '').replace('\r', '')
         self.user_id = params.get('user_id')
 
         return self
