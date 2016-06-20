@@ -14,9 +14,6 @@ class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image_url = db.Column(db.String(255))
     title = db.Column(db.String(255))
-    year = db.Column(db.Integer)
-    artist_name = db.Column(db.String(150))
-    description = db.Column(db.String(255))
     user_id = db.Column(db.String(45))
 
     def __repr__(self):
@@ -28,13 +25,8 @@ class Image(db.Model):
     def data_to_dict(self):
 
         result_dictionary = {
-            "id": self.id,
             "image_url": self.image_url,
             "title": self.title,
-            "year": self.year,
-            "artist_name": self.artist_name,
-            "description": self.description,
-            "user_id": self.user_id,
         }
 
         return result_dictionary

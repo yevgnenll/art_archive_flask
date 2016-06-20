@@ -28,19 +28,7 @@ def params_to_dict(params):
 
 def image_data_filter(params, datas):
 
-    if not params.get('user_id'):
-        abort(401)
-
-    if params.get('title'):
-        datas = datas.filter(Image.title == params.get('title'))
-
-    if params.get('artist_name'):
-        datas = datas.filter(Image.name == params.get('name'))
-
-    if params.get('year'):
-        datas = datas.filter(Image.year == params.get('year'))
-
-    if params.get('description'):
-        datas = datas.filter(Image.description == params.get('description'))
+    if params.get('user_id'):
+        datas = datas.filter(Image.user_id == params.get('user_id'))
 
     return datas
