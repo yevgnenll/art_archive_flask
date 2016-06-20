@@ -6,7 +6,8 @@ home
 {% endblock %}
 
 {% block content %}
-<h3 id="artarchive를-api로-설계">art_archive를 api로 설계</h3>
+    
+<h3 id="artarchive를-api로-설계">image_archive를 api로 설계</h3>
 
 <p><strong>우리 API는 다음 method를 사용합니다</strong></p>
 
@@ -19,7 +20,7 @@ home
 
 
 
-<h3 id="artarchive의-endpoint">art_archive의 Endpoint</h3>
+<h3 id="artarchive의-endpoint">image_archive의 Endpoint</h3>
 
 <table>
 <thead>
@@ -39,17 +40,12 @@ home
   <td>POST</td>
   <td>/api/images/</td>
 </tr>
-<tr>
-  <td>이미지 삭제</td>
-  <td>DELETE</td>
-  <td>/api/images/<em>id</em></td>
-</tr>
 </tbody></table>
 
 
 
 
-<h3 id="artarchive의-resources">art_archive의 Resources</h3>
+<h3 id="artarchive의-resources">image_archive의 Resources</h3>
 
 <table>
 <thead>
@@ -63,16 +59,8 @@ home
   <td>/api/images/</td>
 </tr>
 <tr>
-  <td>유저 list</td>
-  <td>/api/users/</td>
-</tr>
-<tr>
-  <td>이미지</td>
-  <td>/api/images/<em>id</em></td>
-</tr>
-<tr>
-  <td>유저</td>
-  <td>/api/users/<em>id</em></td>
+  <td>이미지 upload</td>
+  <td>/api/images/</td>
 </tr>
 </tbody></table>
 
@@ -85,7 +73,7 @@ home
 <li><strong>URL</strong></li>
 </ul>
 
-<p>/api/images/?page=page&amp;count=count&amp;user_id=user_id<br></p>
+<p>/api/images/?user_id=user_id<br></p>
 
 <ul>
 <li><p><strong>Method</strong></p>
@@ -95,36 +83,24 @@ home
 </ul>
 
 <p><strong>required:</strong><br>
-page=[Integer] default = 1 현재페이지<br>
-count=[Integer] default = 10 한 페이지에 보여줄 결과의 갯수<br>
 user_id=[Integer] 유저의 ID<br></p>
 
 <ol>
 <li><p>user_id가 있는 경우<br>
-이미지제목: title=[String]<br>
 업로드한 유저ID: user_id=[String]<br></p>
 
-<p>ex.) /api/images/?page=page&amp;count=count&amp;user_id=101</p></li>
+<p>ex.) /api/images/?user_id=101</p></li>
 <li><p>user_id가 없는 경우<br>
 요청 실패: 아래의 ERROR Response 참조</p>
 
 <ul><li><p><strong>SUCCESS Response</strong></p></li>
 <li><p><strong>code</strong>: 200<br>
-<strong>pagination</strong>: </p><pre> { current_page: 1, next_url: '/api/images/?page=2&amp;count=입력받은 수&amp;user_i=사용자번호’} </pre> <br>
-<strong>pagination</strong>: 현재 페이지는 존재하지만 다음 페이지가 없는경우  <br>
-            <pre> { current_page: 1, next_url: null } </pre> <br>
 <strong>content</strong>: 1페이지에 10개 이하의 데이터 전송<p></p>
 
-<pre>   { 
-    user_id: 사용자 ID[Integer], 
-    title: 이미지 제목[String] ,
-    current_page: 현재 페이지[Integer],
-    next_url: 다음 페이지 주소[URL],
-    image_list: {
-    image_url: 이미지 주소[URL],
-    title: 이미지 제목[String]
-    }
-    }
+<pre>   ({
+    	image_url: 이미지 주소[URL],
+    	title: 이미지 제목[String]
+    	})
 </pre></li>
 <li><p><strong>ERROR Response</strong></p></li>
 <li><p><strong>code</strong>: 404<br>
@@ -137,7 +113,7 @@ user_id=[Integer] 유저의 ID<br></p>
 
 
 <pre class="prettyprint"><code class=" hljs ruby">  <span class="hljs-variable">$.</span>ajax({
-    <span class="hljs-symbol">url:</span> <span class="hljs-string">"/api/images/?page=1&amp;count=15&amp;user_id=101”,
+    <span class="hljs-symbol">url:</span> <span class="hljs-string">"/api/images/?user_id=101”,
     dataType: "</span>json<span class="hljs-string">",
     type : "</span><span class="hljs-constant">GET</span><span class="hljs-string">",
     success : function(result) {
@@ -205,95 +181,5 @@ user_id로 사용자 정보가 연결됩니다. <br>
 <hr>
 
 
-
-<h4 id="3-이미지-삭제하기">3. 이미지 삭제하기</h4>
-
-<ul>
-<li><p><strong>URL</strong></p>
-
-<p>/api/images/:id</p></li>
-<li><p><strong>Method</strong></p>
-
-<p><code>DELETE</code></p></li>
-<li><p><strong>URL Param</strong></p>
-
-<ul><li><strong>required:</strong><br>
-image_id=[Integer]<br>
-user_id=[Integer]</li></ul></li>
-<li><p><strong>SUCCESS Response</strong></p>
-
-<ul><li><strong>code</strong>: 204<br>
-<strong>content</strong>: <br>
-<pre> { result: "No Content"} </pre></li></ul></li>
-<li><p><strong>ERROR Response</strong></p>
-
-<ul><li><p><strong>code</strong>: 404<br>
-<strong>content</strong>: </p><pre> { error: "Not Found" } </pre> <p></p></li>
-<li><p><strong>code</strong>: 500<br>
-<strong>content</strong>: </p><pre> { error: "Internal Server Error" } </pre> <p></p></li>
-<li><p><strong>code</strong>: 401<br>
-<strong>content</strong>: </p><pre> { error: “Only uploaded user can delete” } </pre> <p></p></li></ul></li>
-<li><p><strong>Sample Code</strong></p></li>
-</ul>
-
-
-
-<pre class="prettyprint"><code class=" hljs ruby">  <span class="hljs-variable">$.</span>ajax({
-    <span class="hljs-symbol">url:</span> <span class="hljs-string">"/api/images/{id}&amp;{user_id}”,
-    dataType: "</span>json<span class="hljs-string">",
-    type : "</span><span class="hljs-constant">DELETE</span><span class="hljs-string">",
-    success : function(result) {
-      console.log(result);
-    }
-  });
-</span></code></pre>
-
-<hr>
-
-<!--
-
-<h4 id="4-사용자-정보-삭제하기">4. 사용자 정보 삭제하기</h4>
-
-<p>사용자 정보를 삭제는 주의가 필요합니다. <br>
-해당 사용자로 등록되어있는 모든 이미지 정보가 함께 삭제됩니다</p>
-
-<ul>
-<li><p><strong>URL</strong></p>
-
-<p>/api/users/:id</p></li>
-<li><p><strong>Method</strong></p>
-
-<p><code>DELETE</code></p></li>
-<li><p><strong>URL Param</strong></p>
-
-<ul><li><strong>required:</strong><br>
-id=[Integer]</li></ul></li>
-<li><p><strong>SUCCESS Response</strong></p>
-
-<ul><li><strong>code</strong>: 204<br>
-<strong>content</strong>: <br>
-<pre> { result: "No Content"} </pre></li></ul></li>
-<li><p><strong>ERROR Response</strong></p>
-
-<ul><li><p><strong>code</strong>: 404<br>
-<strong>content</strong>: </p><pre> { error: "Not Found" } </pre> <p></p></li>
-<li><p><strong>code</strong>: 500<br>
-<strong>content</strong>: </p><pre> { error: "Internal Server Error" } </pre> <p></p></li></ul></li>
-<li><p><strong>Sample Code</strong></p></li>
-</ul>
-
-
-
-<pre class="prettyprint"><code class=" hljs css">  $<span class="hljs-class">.ajax</span>(<span class="hljs-rules">{
-    <span class="hljs-rule"><span class="hljs-attribute">url</span>:<span class="hljs-value"> <span class="hljs-string">"/api/artists/{id}"</span>,
-    dataType: <span class="hljs-string">"json"</span>,
-    type : <span class="hljs-string">"DELETE"</span>,
-    success : <span class="hljs-function">function(result)</span> {
-      console.<span class="hljs-function">log(result)</span></span></span>;
-    <span class="hljs-rule">}</span></span>
-  });
-</code></pre>
--->
-<hr>
 {% endblock %}
 
