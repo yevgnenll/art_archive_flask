@@ -34,24 +34,13 @@ class Image(db.Model):
     def data_get_as_dict(self, params_row):
 
         params = params_row.values
-        year = params.get('year')
         # from IPython import embed; embed()
-        print(params)
-
-        try:
-            if year:
-                year = int(year.replace('\r\n', ''))
-        except ValueError:
-            abort(400)
 
         from archive.utils import upload_image_file
         image_path = upload_image_file(params_row)
 
-        self.year = year
         self.image_url = request.url_root + image_path
         self.title = params.get('title')
-        self.artist_name = params.get('artist_name')
-        self.description = params.get('description')
         self.user_id = params.get('user_id')
 
         return self
