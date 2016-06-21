@@ -8,3 +8,4 @@ werkzeug
 uwsgi
 gunicorn
 honcho
+Pillow

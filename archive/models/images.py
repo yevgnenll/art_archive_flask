@@ -15,6 +15,7 @@ class Image(db.Model):
     image_url = db.Column(db.String(255))
     title = db.Column(db.String(255))
     user_id = db.Column(db.String(45))
+    thumbnail = db.Column(db.String(255))
 
     def __repr__(self):
         return '<id:{id} title: {title}>'.format(
@@ -27,6 +28,7 @@ class Image(db.Model):
         result_dictionary = {
             "image_url": self.image_url,
             "title": self.title,
+            "thumbnail_url": self.thumbnail,
         }
 
         return result_dictionary
@@ -39,8 +41,9 @@ class Image(db.Model):
         from archive.utils import upload_image_file
         image_path = upload_image_file(params_row)
 
-        self.image_url = request.url_root + image_path
+        self.image_url = request.url_root + image_path.get('origin')
         self.title = params.get('title').replace('\n', '').replace('\r', '')
         self.user_id = params.get('user_id')
+        self.thumbnail = request.url_root + image_path.get('thumbnail')
 
         return self

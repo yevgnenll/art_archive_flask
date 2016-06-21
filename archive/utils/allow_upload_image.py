@@ -3,6 +3,7 @@ from flask import abort, request
 from archive import app, BASE_DIR
 
 from werkzeug import secure_filename
+from PIL import Image
 
 import time
 import os
@@ -26,6 +27,20 @@ def save_to_server(upload_file, result_name):
     )
 
 
+def create_thumbnail(upload_file, file_name):
+
+    size = (100, 100)
+
+    try:
+        im = Image.open(upload_file)
+        im.thumbnail(size)
+        result_name = "thumbnail_" + file_name
+        save_to_server(im, result_name)
+    except IOError:
+        abort(400)
+    return 'uploads/' + result_name
+
+
 def upload_image_file(data):
 
     upload_file = data.files.get('image_data')
@@ -43,6 +58,10 @@ def upload_image_file(data):
         '.'.join([pre_name, ext_name])
     )
 
+    thumbnail = create_thumbnail(upload_file, result_name)
     save_to_server(upload_file, result_name)
 
-    return 'uploads/' + result_name
+    return {
+        'origin': 'uploads/' + result_name,
+        'thumbnail': thumbnail,
+    }
