@@ -59,8 +59,8 @@ def upload_image_file(data):
         '.'.join([pre_name, ext_name])
     )
 
-    save_to_server(upload_file, result_name)
     thumbnail = create_thumbnail(upload_file, result_name)
+    save_to_server(upload_file, result_name)
 
     return {
         'origin': 'uploads/' + result_name,
