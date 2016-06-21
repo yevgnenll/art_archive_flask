@@ -60,7 +60,7 @@ def upload_image_file(data):
     )
 
     thumbnail = create_thumbnail(upload_file, result_name)
-    save_to_server(upload_file, result_name)
+    save_to_server(data.files.get('image_data'), result_name)
 
     return {
         'origin': 'uploads/' + result_name,
