@@ -27,12 +27,15 @@ def save_to_server(upload_file, result_name):
     )
 
 
-def create_thumbnail(upload_file, file_name):
+def create_thumbnail(file_name):
 
     size = (100, 100)
 
     try:
-        im = Image.open(upload_file)
+        im = Image.open(
+            os.path.join(BASE_DIR, app.config['UPLOAD_FOLDER'], file_name),
+            "r",
+        )
         im.thumbnail(size)
         result_name = "thumbnail_" + file_name
         save_to_server(im, result_name)
@@ -59,8 +62,8 @@ def upload_image_file(data):
         '.'.join([pre_name, ext_name])
     )
 
-    thumbnail = create_thumbnail(upload_file, result_name)
     save_to_server(data.files.get('image_data'), result_name)
+    thumbnail = create_thumbnail(result_name)
 
     return {
         'origin': 'uploads/' + result_name,
