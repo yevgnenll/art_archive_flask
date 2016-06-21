@@ -30,5 +30,7 @@ def image_data_filter(params, datas):
 
     if params.get('user_id'):
         datas = datas.filter(Image.user_id == params.get('user_id'))
+    else:
+        abort(404)
 
     return datas
