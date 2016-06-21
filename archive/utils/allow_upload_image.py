@@ -36,6 +36,7 @@ def create_thumbnail(upload_file, file_name):
         im.thumbnail(size)
         result_name = "thumbnail_" + file_name
         save_to_server(im, result_name)
+        im.close()
     except IOError:
         abort(400)
     return 'uploads/' + result_name
@@ -58,8 +59,8 @@ def upload_image_file(data):
         '.'.join([pre_name, ext_name])
     )
 
-    thumbnail = create_thumbnail(upload_file, result_name)
     save_to_server(upload_file, result_name)
+    thumbnail = create_thumbnail(upload_file, result_name)
 
     return {
         'origin': 'uploads/' + result_name,
