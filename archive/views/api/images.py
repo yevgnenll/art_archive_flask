@@ -14,8 +14,7 @@ def images():
     images = Image.query
     images = image_data_filter(request.args, images)
 
-    list_amount = images.count()
-
+    # list_amount = images.count()
     # images = pagination_for_list(request.args, images)
 
     content = []
