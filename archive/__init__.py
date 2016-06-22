@@ -14,6 +14,8 @@ app.config['UPLOAD_FOLDER'] = 'uploads/'
 app.config['ALLOWED_EXTENSIONS'] = set(
     ['png', 'jpg', 'gif', 'jpeg', 'bmp', 'svg']
 )
+app.config['SQLALCHEMY_POOL_SIZE'] = 100
+app.config['SQLALCHEMY_POOL_RECYCLE'] = 280
 
 db = SQLAlchemy(app)
 
