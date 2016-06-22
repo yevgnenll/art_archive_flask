@@ -7,6 +7,7 @@ DEBUG = True
 # Define the database - we are working with
 # SQLite for this example
 SQLALCHEMY_DATABASE_URI = os.environ.get('MYSQL_DB')
+SQLALCHEMY_TRACK_MODIFICATIONS = False
 DATABASE_CONNECT_OPTIONS = {}
 
 # Application threads. A common general assumption is
