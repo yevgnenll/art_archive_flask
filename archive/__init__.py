@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, url_for
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 from werkzeug.utils import secure_filename
 
