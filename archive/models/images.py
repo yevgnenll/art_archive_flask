@@ -43,7 +43,7 @@ class Image(db.Model):
 
         self.image_url = request.url_root + image_path.get('origin')
         self.title = params.get('title').replace('\n', '').replace('\r', '')
-        self.user_id = params.get('user_id')
+        self.user_id = params.get('user_id').replace('\n', '').replace('\r', '')
         self.thumbnail = request.url_root + image_path.get('thumbnail')
 
         return self

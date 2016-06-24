@@ -18,13 +18,16 @@ def images():
     # images = pagination_for_list(request.args, images)
 
     content = []
+    count = 0
     for image in images:
         data = image.data_to_dict()
         content.append(data)
+        count += 1
 
     return jsonify(
         content=content,
         code=200,
+        amount=count
         # pagination=pagination_dict(request.args, list_amount),
     )
 
